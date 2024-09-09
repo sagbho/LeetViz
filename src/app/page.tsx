@@ -81,15 +81,31 @@ export default function Home() {
   return (
     <>
       <Header />
+      <div className="bg-amber-400 p-10 rounded-xl flex justify-center items-center text-center">
+        <h1 className="text-black text-3xl">
+          <span className="font-bold">Status: </span>In Development
+        </h1>
+      </div>
       <div className="flex flex-col items-center justify-items-center min-h-screen p-12 pb-12 gap-4 font-[family-name:var(--font-geist-sans)]">
         <div className="flex flex-col items-center text-center gap-x-2 relative">
-          <h1 className="text-3xl tracking-tighter font-bold">LeetViz</h1>
+          <Link href="/">
+            <h1 className="text-3xl tracking-tighter font-bold">LeetViz</h1>
+          </Link>
           <h2 className="text-xl tracking-tighter font-semibold text-amber-600">
             Visualize and analyze leetcode questions
           </h2>
         </div>
         <main className="flex flex-col gap-8 items-center p-8">
           <div className="flex flex-col gap-4 items-center text-center justify-center bg-white w-[900px] h-[500px] rounded-xl relative">
+            <div className="absolute w-[900px] h-[500px] rounded-t-xl">
+              {slides.length > 0 && (
+                <>
+                  {slides.map((slide, index) => (
+                    <React.Fragment key={index}>{slide}</React.Fragment>
+                  ))}
+                </>
+              )}
+            </div>
             <div
               className="flex items-center justify-center text-center absolute top-0 start-0 p-4 gap-x-2"
               id="language-selector"
@@ -131,16 +147,6 @@ export default function Home() {
                 </>
               )}
             </p>
-            <div className="absolute w-[900px] h-[500px] rounded-t-xl">
-              {slides.length > 0 && (
-                <>
-                  {slides.map((slide, index) => (
-                    <React.Fragment key={index}>{slide}</React.Fragment>
-                  ))}
-                </>
-              )}
-            </div>
-
             <div className="flex items-center justify-center bg-slate-200 absolute w-[900px] h-[75px] bottom-0 rounded-b-xl">
               <div className="flex gap-x-4 items-center">
                 <button className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2">
@@ -178,6 +184,7 @@ export default function Home() {
             </form>
           </div>
         </main>
+
         <footer className="flex gap-1 flex-wrap items-center justify-center mt-auto pb-3">
           &copy; 2024
           <Link
