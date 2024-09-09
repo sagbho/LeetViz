@@ -1,101 +1,195 @@
-import Image from "next/image";
+"use client";
+import {
+  ArrowDownIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+} from "@radix-ui/react-icons";
+import { useState } from "react";
+import Link from "next/link";
+import Header from "./components/header";
+import React from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
+  const [inputPlaceholder, setInputPlaceholder] = useState("Ask anything...");
+  const [slides, setSlides] = useState<React.ReactElement[]>([]);
+  const [loading, setLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Controlled Input
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setText((event.target as HTMLInputElement).value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (text.length <= 0) {
+      alert("Please enter a question");
+      return;
+    }
+
+    setLoading(true);
+
+    const input = document.getElementById("language") as HTMLInputElement;
+    const leetcodeQuestion = text;
+    const programmingLanguage = input.value;
+
+    const customQuery = `I want to create a new slide with the following content: ${leetcodeQuestion} in ${programmingLanguage}.`;
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        body: customQuery,
+        headers: { "Content-Type": "text/plain" },
+      });
+
+      const data = await res.text();
+
+      console.log(customQuery);
+      document.getElementById("user-prompt")?.classList.add("hidden");
+      document.getElementById("language-selector")?.classList.add("hidden");
+      setInputPlaceholder("Ask a question to update this slide...");
+
+      const styledData = data
+        .replace(
+          /<h1>/g,
+          '<h1 className="text-2xl font-bold tracking-tighter text-black mb-2">'
+        )
+        .replace(/<p>/g, '<p className="text-base mb-2 text-black">');
+
+      const slideElements = styledData.split("</div>").map((slide, index) => (
+        <React.Fragment key={index}>
+          <div
+            className="p-4 text-black shadow-md rounded-lg mb-4"
+            dangerouslySetInnerHTML={{ __html: slide + "</div>" }}
+          />
+        </React.Fragment>
+      ));
+
+      setSlides(slideElements);
+      setText("");
+      setTitle(leetcodeQuestion);
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while generating the slide.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <Header />
+      <div className="flex flex-col items-center justify-items-center min-h-screen p-12 pb-12 gap-4 font-[family-name:var(--font-geist-sans)]">
+        <div className="flex flex-col items-center text-center gap-x-2 relative">
+          <h1 className="text-3xl tracking-tighter font-bold">LeetViz</h1>
+          <h2 className="text-xl tracking-tighter font-semibold text-amber-600">
+            Visualize and analyze leetcode questions
+          </h2>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <main className="flex flex-col gap-8 items-center p-8">
+          <div className="flex flex-col gap-4 items-center text-center justify-center bg-white w-[900px] h-[500px] rounded-xl relative">
+            <div
+              className="flex items-center justify-center text-center absolute top-0 start-0 p-4 gap-x-2"
+              id="language-selector"
+            >
+              <label
+                htmlFor="language"
+                className="text-black font-semibold tracking-tighter"
+              >
+                Language:
+              </label>
+
+              <div className="relative font-[family-name:var(--font-geist-sans)] text-black font-semibold tracking-tighter focus:outline-none rounded-md border-amber-500 border-2 border-solid">
+                <select
+                  name="language"
+                  id="language"
+                  className="rounded-xl focus:outline-none"
+                >
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="c++">C++</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex items-center justify-center text-center absolute top-0 end-0 p-4 gap-x-2">
+              <span className="text-black font-light tracking-tighter text-sm">
+                {title}
+              </span>
+            </div>
+            <p
+              className="flex text-gray-700 tracking-tighter items-center gap-x-2 font-semibold"
+              id="user-prompt"
+            >
+              {loading ? (
+                "Loading..."
+              ) : (
+                <>
+                  Enter your question below
+                  <ArrowDownIcon />
+                </>
+              )}
+            </p>
+            <div className="absolute w-[900px] h-[500px] rounded-t-xl">
+              {slides.length > 0 && (
+                <>
+                  {slides.map((slide, index) => (
+                    <React.Fragment key={index}>{slide}</React.Fragment>
+                  ))}
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center justify-center bg-slate-200 absolute w-[900px] h-[75px] bottom-0 rounded-b-xl">
+              <div className="flex gap-x-4 items-center">
+                <button className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2">
+                  <ArrowLeftIcon className="text-black" />
+                </button>
+                <span className="font-semibold text-black ">
+                  1 / {slides.length}
+                </span>
+                <button className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2">
+                  <ArrowRightIcon className="text-black" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-row relative w-[400px] items-center"
+            >
+              <input
+                className="flex items-center rounded-full p-3 w-[100%] focus:outline-none caret-black tracking-tighter text-black"
+                type="text"
+                placeholder={inputPlaceholder}
+                onChange={handleInput}
+                value={text}
+                id="questionInput"
+              />
+              <button
+                className="bg-amber-600 hover:bg-amber-700  text-white font-bold p-3 rounded-full absolute flex right-1 items-center justify-center"
+                type="submit"
+              >
+                <ArrowUpIcon />
+              </button>
+            </form>
+          </div>
+        </main>
+        <footer className="flex gap-1 flex-wrap items-center justify-center mt-auto pb-3">
+          &copy; 2024
+          <Link
+            href={"https://www.linkedin.com/in/sagar-bhola"}
+            className="font-semibold"
+            target="_blank"
+          >
+            LeetViz.
+          </Link>
+          All rights reserved.
+        </footer>
+      </div>
+    </>
   );
 }
