@@ -2,15 +2,17 @@
 
 💬 Visualize and Analyze Leetcode questions and problems
 
-## Status: Working on formatting responses and pagination
+## Status: Working on responsive styling and latency optimizations
 
 ## Frontend
+
 - Next.js
 - React
 - TypeScript
 - Tailwind CSS
 
 ## Backend
+
 - Next.js
-- Llama 3.1 LLM
+- LLM (Google Gemini 1.5 Flash)
 - Clerk Authentication
