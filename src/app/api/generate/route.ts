@@ -1,13 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const systemPrompt = (query: string) => `
-  I want you to now create a slideshow for this query:
+const systemPrompt = (query: string) =>
+  `I want you to create a slideshow for this query:
 
-  ${query}
+${query}
 
-  It should be 5-15 simple slides that do not overwhelm me with content. Simply return the JSX array using div, h1, p, ol, and li tags, nothing else.
-`;
+The slideshow should consist of five to fifteen simple slides, designed to help someone understand the approach to the leetcode problem. Each slide should be clear and not overwhelming. The output should be a JSX array formatted as plain text using div, h1, p, ol, and li tags. Please do not include any additional formatting or JSON structures. For example:
+
+[
+  {
+    "slide": 1,
+    "content": [
+      <div className="slide">
+        <h1>Slide Title</h1>
+        <p>Explanation of the approach or concept.</p>
+      </div>
+    ]
+  },
+  ... additional slides follow...
+]`;
 
 export async function POST(req: NextRequest) {
   const openai = new OpenAI({
@@ -17,17 +29,17 @@ export async function POST(req: NextRequest) {
 
   const data = await req.text();
   const completion = await openai.chat.completions.create({
-    model: "nousresearch/hermes-3-llama-3.1-405b",
-
+    model: "google/gemini-flash-1.5-exp",
     messages: [
       { role: "system", content: systemPrompt(data) },
       { role: "user", content: data },
     ],
   });
 
-  console.log(completion.choices[0].message.content);
-
   const jsxArray = completion.choices[0].message.content;
+
+  // Log the response to check its format
+  console.log("Received JSX Array:", jsxArray);
 
   return new NextResponse(jsxArray, {
     status: 200,
