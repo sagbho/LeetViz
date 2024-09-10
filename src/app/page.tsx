@@ -115,141 +115,146 @@ export default function Home() {
   return (
     <>
       <Header />
-      <h1 className="text-2xl text-black bg-amber-500 items-center text-center mx-[700px] rounded-xl p-3">
-        <span className="font-bold">Status: </span>In Development
-      </h1>
-      <div className="flex flex-col items-center justify-items-center min-h-screen p-12 pb-12 gap-4 font-[family-name:var(--font-geist-sans)]">
-        <div className="flex flex-col items-center text-center gap-x-2 relative">
-          <Link href="/">
-            <h1 className="text-3xl tracking-tighter font-bold">LeetViz</h1>
-          </Link>
-          <h2 className="text-xl tracking-tighter font-semibold text-amber-600">
-            Visualize and analyze leetcode questions
-          </h2>
+      <main className="flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center justify-center text-center bg-amber-500 rounded-xl p-3 w-[200px] h-[100px]">
+          <h1 className="text-2xl text-black font-bold">Status: </h1>
+          <h1 className="text-black text-xl">In Development</h1>
         </div>
-        <main className="flex flex-col gap-8 items-center p-8">
-          <div className="flex flex-col gap-4 items-center text-center justify-center bg-white w-[900px] h-[500px] rounded-xl relative">
-            <LoginModal
-              isOpen={isLoginModalOpen}
-              onClose={() => setIsLoginModalOpen(false)}
-            />
-            {currentSlides.length === 0 && (
-              <>
-                <div
-                  className="flex items-center justify-center text-center absolute top-0 start-0 p-4 gap-x-2"
-                  id="language-selector"
-                >
-                  <label
-                    htmlFor="language"
-                    className="text-black font-semibold tracking-tighter"
+        <div className="flex flex-col items-center justify-items-center min-h-screen lg:p-12 sm:p-1 lg:pb-12 sm:pb-1 gap-4 font-[family-name:var(--font-geist-sans)]">
+          <div className="flex flex-col items-center text-center gap-x-2 relative">
+            <Link href="/">
+              <h1 className="text-3xl tracking-tighter font-bold">LeetViz</h1>
+            </Link>
+            <h2 className="text-xl tracking-tighter font-semibold text-amber-600">
+              Visualize and analyze leetcode questions
+            </h2>
+          </div>
+          <main className="flex flex-col gap-8 items-center lg:p-8">
+            <div className="flex flex-col gap-4 items-center text-center justify-center bg-white w-[300px] h-[400px]  lg:w-[900px] lg:h-[500px] md:w-[600px] md:h-[400px] rounded-xl relative">
+              <LoginModal
+                isOpen={isLoginModalOpen}
+                onClose={() => setIsLoginModalOpen(false)}
+              />
+              {currentSlides.length === 0 && (
+                <>
+                  <div
+                    className="flex items-center justify-center text-center absolute top-0 start-0 p-4 gap-x-2"
+                    id="language-selector"
                   >
-                    Language:
-                  </label>
-
-                  <div className="relative font-[family-name:var(--font-geist-sans)] text-black font-semibold tracking-tighter focus:outline-none rounded-md border-amber-500 border-2 border-solid">
-                    <select
-                      name="language"
-                      value={programmingLanguage}
-                      id="language"
-                      onChange={handleLanguageChange}
-                      className="rounded-xl focus:outline-none"
+                    <label
+                      htmlFor="language"
+                      className="text-black font-semibold tracking-tighter"
                     >
-                      <option value="python">Python</option>
-                      <option value="java">Java</option>
-                      <option value="c++">C++</option>
-                    </select>
+                      Language:
+                    </label>
+
+                    <div className="relative font-[family-name:var(--font-geist-sans)] text-black font-semibold tracking-tighter focus:outline-none rounded-md border-amber-500 border-2 border-solid">
+                      <select
+                        name="language"
+                        value={programmingLanguage}
+                        id="language"
+                        onChange={handleLanguageChange}
+                        className="rounded-xl focus:outline-none"
+                      >
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="c++">C++</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <p
-                  className="flex text-gray-700 tracking-tighter items-center gap-x-2 font-semibold"
-                  id="user-prompt"
-                >
+                  <p
+                    className="flex text-gray-700 tracking-tighter items-center gap-x-2 font-semibold"
+                    id="user-prompt"
+                  >
+                    {loading ? (
+                      "Loading..."
+                    ) : (
+                      <>
+                        Enter your question below
+                        <ArrowDownIcon />
+                      </>
+                    )}
+                  </p>
+                </>
+              )}
+              {currentSlides.length > 0 && (
+                <>
                   {loading ? (
                     "Loading..."
                   ) : (
                     <>
-                      Enter your question below
-                      <ArrowDownIcon />
+                      <div className="flex items-center p-4">
+                        {currentSlides}
+                      </div>
                     </>
                   )}
-                </p>
-              </>
-            )}
-            {currentSlides.length > 0 && (
-              <>
-                {loading ? (
-                  "Loading..."
-                ) : (
-                  <>
-                    <div className="flex items-center p-4">{currentSlides}</div>
-                  </>
-                )}
 
-                <div className="flex items-center justify-center text-center absolute top-0 end-0 p-4 gap-x-2">
-                  <span className="text-black font-light tracking-tighter text-sm">
-                    {title}
-                  </span>
-                </div>
-                <div className="flex items-center justify-center bg-slate-200 absolute w-[900px] h-[75px] bottom-0 rounded-b-xl">
-                  <div className="flex gap-x-4 items-center">
-                    <button
-                      className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2"
-                      onClick={goToPreviousPage}
-                      disabled={currentPage === 1}
-                    >
-                      <ArrowLeftIcon className="text-black" />
-                    </button>
-                    <span className="font-semibold text-black">
-                      {currentPage} / {totalPages}
+                  <div className="flex items-center justify-center text-center absolute top-0 end-0 p-4 gap-x-2">
+                    <span className="text-black font-light tracking-tighter text-sm">
+                      {title}
                     </span>
-                    <button
-                      className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2"
-                      onClick={goToNextPage}
-                      disabled={currentPage === totalPages}
-                    >
-                      <ArrowRightIcon className="text-black" />
-                    </button>
                   </div>
-                </div>
-              </>
-            )}
-          </div>
+                  <div className="flex items-center justify-center bg-slate-200 absolute w-[900px] h-[75px] bottom-0 rounded-b-xl">
+                    <div className="flex gap-x-4 items-center">
+                      <button
+                        className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2"
+                        onClick={goToPreviousPage}
+                        disabled={currentPage === 1}
+                      >
+                        <ArrowLeftIcon className="text-black" />
+                      </button>
+                      <span className="font-semibold text-black">
+                        {currentPage} / {totalPages}
+                      </span>
+                      <button
+                        className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2"
+                        onClick={goToNextPage}
+                        disabled={currentPage === totalPages}
+                      >
+                        <ArrowRightIcon className="text-black" />
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
 
-          <div>
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-row relative w-[400px] items-center"
-            >
-              <input
-                className="flex items-center rounded-full p-3 w-[100%] focus:outline-none caret-black tracking-tighter text-black"
-                type="text"
-                placeholder="Ask anything..."
-                onChange={handleInput}
-                value={text}
-                id="questionInput"
-              />
-              <button
-                className="bg-amber-600 hover:bg-amber-700  text-white font-bold p-3 rounded-full absolute flex right-1 items-center justify-center"
-                type="submit"
+            <div>
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-row relative lg:w-[400px] sm:w-[200px] items-center"
               >
-                <ArrowUpIcon />
-              </button>
-            </form>
-          </div>
-        </main>
+                <input
+                  className="flex items-center rounded-full p-3 w-[100%] focus:outline-none caret-black tracking-tighter text-black"
+                  type="text"
+                  placeholder="Ask anything..."
+                  onChange={handleInput}
+                  value={text}
+                  id="questionInput"
+                />
+                <button
+                  className="bg-amber-600 hover:bg-amber-700  text-white font-bold p-3 rounded-full absolute flex right-1 items-center justify-center"
+                  type="submit"
+                >
+                  <ArrowUpIcon />
+                </button>
+              </form>
+            </div>
+          </main>
 
-        <footer className="flex gap-1 flex-wrap items-center justify-center mt-auto pb-3">
-          &copy; 2024
-          <Link
-            href={"https://www.linkedin.com/in/sagar-bhola"}
-            className="font-semibold"
-            target="_blank"
-          >
-            LeetViz.
-          </Link>
-          All rights reserved.
-        </footer>
-      </div>
+          <footer className="flex gap-1 flex-wrap items-center justify-center mt-auto pb-3">
+            &copy; 2024
+            <Link
+              href={"https://www.linkedin.com/in/sagar-bhola"}
+              className="font-semibold"
+              target="_blank"
+            >
+              LeetViz.
+            </Link>
+            All rights reserved.
+          </footer>
+        </div>
+      </main>
     </>
   );
 }
