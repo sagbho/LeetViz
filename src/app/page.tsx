@@ -218,12 +218,12 @@ export default function Home() {
             <div className="pb-24">
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-row relative lg:w-[400px] sm:w-[300px] items-center"
+                className="flex flex-row relative w-[300px] lg:w-[400px] items-center"
               >
                 <input
-                  className="flex items-center rounded-full p-3 w-[100%] focus:outline-none caret-black tracking-tighter text-black"
+                  className="flex items-center rounded-full p-4 w-[100%] focus:outline-none caret-black tracking-tighter text-black"
                   type="text"
-                  placeholder="Ask anything..."
+                  placeholder="Enter Leetcode question..."
                   onChange={handleInput}
                   value={text}
                   id="questionInput"

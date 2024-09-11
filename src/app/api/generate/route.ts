@@ -6,7 +6,7 @@ const systemPrompt = (query: string) =>
 
 ${query}
 
-The slideshow should consist of five to fifteen simple slides, designed to help someone understand the complete approach to the leetcode problem. Each slide should be clear and not overwhelming. The output should be a JSX array formatted as plain text using div, h1, p, ol, and li tags. Please do not include any additional formatting or JSON structures. For example:
+The slideshow should consist of five to fifteen simple slides, designed to help someone understand the complete approach to the leetcode problem with some possible code. Each slide should be clear and not overwhelming. The output should be a JSX array formatted as plain text using div, h1, p, ol, and li tags. Please do not include any additional formatting or JSON structures. For example:
 
 [
   {
