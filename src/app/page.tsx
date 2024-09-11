@@ -116,21 +116,17 @@ export default function Home() {
     <>
       <Header />
       <main className="flex flex-col items-center justify-center text-center">
-        <div className="flex flex-col items-center justify-center text-center bg-amber-500 rounded-xl p-3 w-[200px] h-[100px]">
-          <h1 className="text-2xl text-black font-bold">Status: </h1>
-          <h1 className="text-black text-xl">In Development</h1>
-        </div>
-        <div className="flex flex-col items-center justify-items-center min-h-screen lg:p-12 sm:p-1 lg:pb-12 sm:pb-1 gap-4 font-[family-name:var(--font-geist-sans)]">
+        <div className="flex flex-col items-center justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
           <div className="flex flex-col items-center text-center gap-x-2 relative">
             <Link href="/">
               <h1 className="text-3xl tracking-tighter font-bold">LeetViz</h1>
             </Link>
-            <h2 className="text-xl tracking-tighter font-semibold text-amber-600">
+            <h2 className="text-xl tracking-tighter font-semibold text-amber-600 pb-6">
               Visualize and analyze leetcode questions
             </h2>
           </div>
-          <main className="flex flex-col gap-8 items-center lg:p-8">
-            <div className="flex flex-col gap-4 items-center text-center justify-center bg-white w-[300px] h-[400px]  lg:w-[900px] lg:h-[500px] md:w-[600px] md:h-[400px] rounded-xl relative">
+          <main className="flex flex-col gap-8 items-center">
+            <div className="flex flex-col gap-4 items-center text-center justify-center bg-white w-[300px] h-[400px] lg:w-[900px] lg:h-[500px] md:w-[600px] md:h-[400px] rounded-xl relative">
               <LoginModal
                 isOpen={isLoginModalOpen}
                 onClose={() => setIsLoginModalOpen(false)}
@@ -194,7 +190,7 @@ export default function Home() {
                       {title}
                     </span>
                   </div>
-                  <div className="flex items-center justify-center bg-slate-200 absolute w-[900px] h-[75px] bottom-0 rounded-b-xl">
+                  <div className="flex items-center justify-center bg-slate-200 w-[100%] h-[60px] bottom-0 rounded-b-xl absolute ">
                     <div className="flex gap-x-4 items-center">
                       <button
                         className="bg-slate-300 hover:bg-slate-400 text-white rounded-xl p-2"
@@ -219,10 +215,10 @@ export default function Home() {
               )}
             </div>
 
-            <div>
+            <div className="pb-24">
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-row relative lg:w-[400px] sm:w-[200px] items-center"
+                className="flex flex-row relative lg:w-[400px] sm:w-[300px] items-center"
               >
                 <input
                   className="flex items-center rounded-full p-3 w-[100%] focus:outline-none caret-black tracking-tighter text-black"
@@ -242,16 +238,23 @@ export default function Home() {
             </div>
           </main>
 
-          <footer className="flex gap-1 flex-wrap items-center justify-center mt-auto pb-3">
-            &copy; 2024
-            <Link
-              href={"https://www.linkedin.com/in/sagar-bhola"}
-              className="font-semibold"
-              target="_blank"
-            >
-              LeetViz.
-            </Link>
-            All rights reserved.
+          <footer className="flex flex-col gap-1 flex-wrap items-center justify-center">
+            <div className="flex flex-row items-center justify-center text-center bg-amber-500 rounded-xl p-2 m-2 w-[300px] h-[50px]">
+              <h1 className="text-xl text-black font-bold">
+                Status: In Development
+              </h1>
+            </div>
+            <div className="flex gap-1 flex-wrap items-center justify-center">
+              &copy; 2024
+              <Link
+                href={"https://www.linkedin.com/in/sagar-bhola"}
+                className="font-semibold"
+                target="_blank"
+              >
+                LeetViz.
+              </Link>
+              All rights reserved.
+            </div>
           </footer>
         </div>
       </main>
